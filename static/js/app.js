@@ -29,6 +29,7 @@ function optionChanged(subject) {
 
 main();
 
+//set function to update data of the sample based on subject chosen
 function hugeData(sample){
     d3.json(url).then(function(data){let mega = data.metadata
         let megaArray = mega.filter(obj => obj.id == sample);
@@ -41,6 +42,8 @@ function hugeData(sample){
     }
      })    
 };
+
+//set function so that all charts change when choosing a new sample with subject ID
 
 function makeCharts(sample){
 
@@ -68,48 +71,50 @@ function makeCharts(sample){
       
       Plotly.newPlot('bar', barData);
 
+      //bubble chart code
       var trace1 = {
-        x: [1, 2, 3, 4],
-        y: [10, 11, 12, 13],
+        x: otu_ids,
+        y: sample_values,
+        text: otu_labels,
         mode: 'markers',
         marker: {
-          color: ['rgb(93, 164, 214)', 'rgb(255, 144, 14)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'],
+          color: otu_ids,
           opacity: [1, 0.8, 0.6, 0.4],
-          size: [40, 60, 80, 100]
+          size: sample_values
         }
       };
       
       var bubbleData = [trace1];
       
       var bubbleLayout = {
-        title: 'Marker Size and Color',
+        title: 'OTU ID',
         showlegend: false,
         height: 600,
-        width: 600
+        width: 1200
       };
       
       Plotly.newPlot('bubble', bubbleData, bubbleLayout);
       
-
+      //gauge chart code
       var gaugeData = [
         {
           type: "indicator",
-          mode: "gauge+number+delta",
+          mode: "gauge+value+delta",
           value: wfreq,
-          title: { text: "Speed", font: { size: 24 } },
-          delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
+          title: { text: "Belly Button Washing Frequency <br> Scrubs per week", font: { size: 20 } },
+          delta: { reference: 9, increasing: { color: "RebeccaPurple" } },
           gauge: {
-            axis: { range: [null, 500], tickwidth: 1, tickcolor: "darkblue" },
-            bar: { color: "darkblue" },
+            axis: { range: [0,9], tickwidth: .01, tickcolor: "darkpurple" },
+            bar: { color: "cyan" },
             bgcolor: "white",
             borderwidth: 2,
             bordercolor: "gray",
             steps: [
-              { range: [0, 250], color: "cyan" },
-              { range: [250, 400], color: "royalblue" }
+              { range: [0, 5], color: "purple" },
+              { range: [5, 9], color: "navy" }
             ],
             threshold: {
-              line: { color: "red", width: 4 },
+              line: { color: "red", width: 6 },
               thickness: 0.75,
               value: 490
             }
@@ -118,7 +123,7 @@ function makeCharts(sample){
       ];
       
       var gaugeLayout = {
-        width: 500,
+        width: 400,
         height: 400,
         margin: { t: 25, r: 25, l: 25, b: 25 },
         paper_bgcolor: "lavender",
