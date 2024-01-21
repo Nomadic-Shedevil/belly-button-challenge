@@ -10,6 +10,7 @@ let selector = d3.select("#selDataset")
 d3.json(url).then(function(data) {
     console.log(data);
     let random = data.names
+        // random.forEach((sample) =>{selector.append("option").text(sample).property("value",sample)})
     for(let i = 0; i < random.length; i++) {
         selector.append("option").text(random[i]).property("value", random[i]);
 
@@ -47,12 +48,13 @@ function hugeData(sample){
 
 function makeCharts(sample){
 
-    d3.json(url).then(function(data){let mega = data.metadata
+    d3.json(url).then(function(data){
+        let mega = data.metadata;
         let megaArray = mega.filter(obj => obj.id == sample);
         let megaResult = megaArray[0];
-        
-        let wfreq = megaResult.wfreq
-        let little = data.samples
+        console.log(megaArray);
+        let wfreq = megaResult.wfreq;
+        let little = data.samples;
         let littleArray = little.filter(obj => obj.id == sample);
         let littleResult = littleArray[0];
         let otu_ids = littleResult.otu_ids;
